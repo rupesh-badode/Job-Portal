@@ -6,8 +6,7 @@ import { checkRole } from "../middleware/roleMiddleware.js";
 
 const router = express.Router();
 
-// ✅ Browse Jobs (with search & pagination)
-router.get("/jobs", authMiddleware, checkRole("jobseeker"), async (req, res) => {
+router.get("/jobs", authMiddleware, async (req, res) => {
   try {
     const { page = 1, limit = 10, search = "", location } = req.query;
     const query = {
