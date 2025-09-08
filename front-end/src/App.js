@@ -13,6 +13,7 @@
   import ProtectedRoute from "./components/ProtectedRoute";
   import JobseekerLanding from "./pages/job-seeker/Home-user";
   import Dashboard from "./pages/dashboard/Dashboard";
+import Applications from "./pages/job-seeker/Applications";
 
   function App() {
     return (
@@ -28,6 +29,7 @@
             <Route path="/jobs" element={<ProtectedRoute> <JobPage/> </ProtectedRoute>} />
             <Route path="/job/:id" element={<ProtectedRoute><JobDetails /></ProtectedRoute>  } />
             <Route path="*" element={<ProtectedRoute><JobPage /></ProtectedRoute>} />
+            <Route path="/applications" element={<ProtectedRoute><Applications/></ProtectedRoute>} />
             <Route path="/user-home" element={<ProtectedRoute> <JobseekerLanding/>  </ProtectedRoute>} />
             <Route path="/dashboard" element={ <ProtectedRoute> <Dashboard/> </ProtectedRoute> } />
 

@@ -69,8 +69,8 @@ export default function Navbar() {
                     <Link to="/jobs" className="hover:text-yellow-300 transition">
                       Browse Jobs
                     </Link>
-                    <Link to="/applied-jobs" className="hover:text-yellow-300 transition">
-                      Applied Jobs
+                    <Link to="/applications" className="hover:text-yellow-300 transition">
+                      Applications
                     </Link>
                   </>
                 )}

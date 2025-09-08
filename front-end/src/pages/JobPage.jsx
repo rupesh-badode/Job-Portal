@@ -1,11 +1,11 @@
 // JobPage.jsx
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { motion } from "framer-motion";
-import { Briefcase, MapPin, User, Building2 } from "lucide-react";
+import { Briefcase, MapPin, User, Building2, Link, DollarSign } from "lucide-react";
+import API from "../api";
 
 // --- Job Card ---
-function JobCard({ job }) {
+function JobCard({ job, onApply }) {
   return (
     <motion.div
       whileHover={{ scale: 1.02 }}
@@ -17,17 +17,49 @@ function JobCard({ job }) {
       <h2 className="text-lg font-bold flex items-center gap-2">
         <Briefcase className="w-5 h-5 text-blue-600" /> {job.title}
       </h2>
+
       <p className="text-gray-600 text-sm line-clamp-2">{job.description}</p>
+
       <div className="flex items-center gap-2 text-sm">
-        <Building2 className="w-4 h-4 text-green-600" /> {job.company}
+        <Building2 className="w-4 h-4 text-green-600" />
+        <a
+          href={job.companyLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-600 hover:underline"
+        >
+          {job.companyName}
+        </a>
       </div>
+
       <div className="flex items-center gap-2 text-sm">
-        <MapPin className="w-4 h-4 text-red-600" /> {job.location}
+        <MapPin className="w-4 h-4 text-red-600" />
+        {job.city}, {job.state}
       </div>
+
       <div className="flex items-center gap-2 text-sm">
-        <User className="w-4 h-4 text-purple-600" />{" "}
-        {job.postedBy?.name || "Unknown"}
+        <User className="w-4 h-4 text-purple-600" /> {job.jobType}
       </div>
+
+      <div className="flex items-center gap-2 text-sm">
+        <DollarSign className="w-4 h-4 text-yellow-600" /> {job.salary}
+      </div>
+
+      <p className="text-sm text-gray-500">
+        <strong>Skills:</strong> {job.requiredSkills}
+      </p>
+
+      <p className="text-xs text-gray-400">
+        Posted on: {new Date(job.postDate).toLocaleDateString()}
+      </p>
+
+      {/* ✅ Apply Button inside job card */}
+      <button
+        onClick={() => onApply(job._id)}
+        className="mt-3 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+      >
+        Apply
+      </button>
     </motion.div>
   );
 }
@@ -47,19 +79,31 @@ export default function JobPage() {
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    axios
-      .get("/jobs")
+    API.get(`/jobs`)
       .then((res) => setJobs(res.data))
       .catch((err) => console.error(err))
       .finally(() => setLoading(false));
   }, []);
 
-  // ✅ Show only active jobs + filters
+  // ✅ Apply handler
+  const handleApply = async (jobId) => {
+    try {
+      const res = await API.post(`/jobs/apply/${jobId}`);
+      alert(res.data.message || "Applied successfully!");
+    } catch (err) {
+      console.error(err);
+      alert(err.response?.data?.error || "Failed to apply");
+    }
+  };
+
+  // ✅ Filters
   const filteredJobs = jobs.filter((job) => {
     return (
       job.status === "active" &&
-      (selectedCity ? job.location === selectedCity : true) &&
-      (selectedTech ? job.technology === selectedTech : true) &&
+      (selectedCity ? job.city === selectedCity : true) &&
+      (selectedTech
+        ? job.requiredSkills.toLowerCase().includes(selectedTech.toLowerCase())
+        : true) &&
       (searchTerm
         ? job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
           job.description.toLowerCase().includes(searchTerm.toLowerCase())
@@ -76,7 +120,7 @@ export default function JobPage() {
   if (loading) return <p className="text-center mt-20">Loading jobs...</p>;
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex min-h-screen bg-gray-50 mt-20">
       {/* --- Left Panel Filters --- */}
       <aside className="w-64 bg-white p-6 border-r hidden md:block">
         <h2 className="text-lg font-semibold mb-4">Filters</h2>
@@ -93,12 +137,13 @@ export default function JobPage() {
             <option value="Indore">Indore</option>
             <option value="Bhopal">Bhopal</option>
             <option value="Mumbai">Mumbai</option>
+            <option value="khandwa">Khandwa</option>
           </select>
         </div>
 
         {/* Technology Filter */}
         <div>
-          <label className="block font-medium mb-2">Technology</label>
+          <label className="block font-medium mb-2">Skills</label>
           <select
             className="w-full border rounded p-2"
             value={selectedTech}
@@ -109,6 +154,7 @@ export default function JobPage() {
             <option value="Node.js">Node.js</option>
             <option value="Java">Java</option>
             <option value="Python">Python</option>
+            <option value="Spring Boot">Spring Boot</option>
           </select>
         </div>
       </aside>
@@ -130,7 +176,7 @@ export default function JobPage() {
         {currentJobs.length > 0 ? (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {currentJobs.map((job) => (
-              <JobCard key={job._id} job={job} />
+              <JobCard key={job._id} job={job} onApply={handleApply} />
             ))}
           </div>
         ) : (
