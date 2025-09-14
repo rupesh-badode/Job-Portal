@@ -6,7 +6,8 @@ import { checkRole } from "../middleware/roleMiddleware.js";
 
 const router = express.Router();
 
-router.get("/jobs", authMiddleware, async (req, res) => {
+// ✅ Public: Browse jobs
+router.get("/", async (req, res) => {
   try {
     const { page = 1, limit = 10, search = "", location } = req.query;
     const query = {
@@ -32,18 +33,15 @@ router.get("/jobs", authMiddleware, async (req, res) => {
   }
 });
 
-// ✅ Apply to a Job
-router.post("/apply/:jobId", authMiddleware, checkRole("jobseeker"), async (req, res) => {
+// ✅ Jobseeker: Apply to a job
+router.post("/apply/:jobId", authMiddleware, checkRole("ROLE_JOBSEEKER"), async (req, res) => {
   try {
-    // check if already applied
     const existing = await Application.findOne({
       jobId: req.params.jobId,
       applicantId: req.user.id
     });
 
-    if (existing) {
-      return res.status(400).json({ error: "Already applied to this job" });
-    }
+    if (existing) return res.status(400).json({ error: "Already applied" });
 
     const application = await Application.create({
       jobId: req.params.jobId,
@@ -56,11 +54,11 @@ router.post("/apply/:jobId", authMiddleware, checkRole("jobseeker"), async (req,
   }
 });
 
-// ✅ Track Applications
-router.get("/applications", authMiddleware, checkRole("jobseeker"), async (req, res) => {
+// ✅ Jobseeker: View own applications
+router.get("/applications/my", authMiddleware, checkRole("ROLE_JOBSEEKER"), async (req, res) => {
   try {
     const apps = await Application.find({ applicantId: req.user.id })
-      .populate("jobId", "title company location status");
+      .populate("jobId", "title companyName city state jobType status");
     res.json(apps);
   } catch (err) {
     res.status(500).json({ error: err.message });

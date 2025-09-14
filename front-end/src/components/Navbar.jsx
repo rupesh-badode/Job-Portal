@@ -81,10 +81,10 @@ export default function Navbar() {
                     <Link to="/dashboard/hr" className="hover:text-yellow-300 transition">
                       HR Dashboard
                     </Link>
-                    <Link to="/post-job" className="hover:text-yellow-300 transition">
-                      Post Job
+                    <Link to="/job-manage" className="hover:text-yellow-300 transition">
+                      Job Management
                     </Link>
-                    <Link to="/manage-applications" className="hover:text-yellow-300 transition">
+                    <Link to="/application-manage" className="hover:text-yellow-300 transition">
                       Manage Applications
                     </Link>
                   </>

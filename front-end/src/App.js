@@ -13,7 +13,9 @@
   import ProtectedRoute from "./components/ProtectedRoute";
   import JobseekerLanding from "./pages/job-seeker/Home-user";
   import Dashboard from "./pages/dashboard/Dashboard";
-import Applications from "./pages/job-seeker/Applications";
+  import Applications from "./pages/job-seeker/Applications";
+  import JobManagement from "./pages/hr/JobManagement";
+  import ApplicationManage from "./pages/hr/ApplicationManage";
 
   function App() {
     return (
@@ -28,10 +30,11 @@ import Applications from "./pages/job-seeker/Applications";
             {/* Protected route */}
             <Route path="/jobs" element={<ProtectedRoute> <JobPage/> </ProtectedRoute>} />
             <Route path="/job/:id" element={<ProtectedRoute><JobDetails /></ProtectedRoute>  } />
-            <Route path="*" element={<ProtectedRoute><JobPage /></ProtectedRoute>} />
             <Route path="/applications" element={<ProtectedRoute><Applications/></ProtectedRoute>} />
             <Route path="/user-home" element={<ProtectedRoute> <JobseekerLanding/>  </ProtectedRoute>} />
             <Route path="/dashboard" element={ <ProtectedRoute> <Dashboard/> </ProtectedRoute> } />
+            <Route path="/job-manage" element={ <ProtectedRoute> <JobManagement/> </ProtectedRoute> } />
+            <Route path="/application-manage" element={ <ProtectedRoute> <ApplicationManage/> </ProtectedRoute> } />
 
             {/* Role Protected */}
             <Route
@@ -40,7 +43,7 @@ import Applications from "./pages/job-seeker/Applications";
             />
             <Route
               path="/dashboard/hr"
-              element={<ProtectedRoute role={["ROLE_HR"]}><HrDashboard /></ProtectedRoute>}
+              element={<ProtectedRoute role={["ROLE_HR"]}><HrDashboard/></ProtectedRoute>}
             />
             <Route
               path="/dashboard/user"
