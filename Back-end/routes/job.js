@@ -55,10 +55,11 @@ router.post("/apply/:jobId", authMiddleware, checkRole("ROLE_JOBSEEKER"), async 
 });
 
 // ✅ Jobseeker: View own applications
-router.get("/applications/my", authMiddleware, checkRole("ROLE_JOBSEEKER"), async (req, res) => {
+router.get("/applications", authMiddleware, checkRole("ROLE_JOBSEEKER"), async (req, res) => {
   try {
     const apps = await Application.find({ applicantId: req.user.id })
-      .populate("jobId", "title companyName city state jobType status");
+      .populate("jobId", "title companyName city state jobType status")
+      .populate("applicantId", "name email");
     res.json(apps);
   } catch (err) {
     res.status(500).json({ error: err.message });

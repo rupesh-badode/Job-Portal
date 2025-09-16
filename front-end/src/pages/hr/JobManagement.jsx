@@ -6,7 +6,6 @@ import API from "../../api"; // ✅ your axios instance
 
 export default function JobManagement() {
   const [jobs, setJobs] = useState([]);
-  const [stats, setStats] = useState({});
   const [showForm, setShowForm] = useState(false);
   const [editingJob, setEditingJob] = useState(null);
   const [applicants, setApplicants] = useState({});
@@ -31,10 +30,8 @@ export default function JobManagement() {
       try {
         const [jobsRes, statsRes] = await Promise.all([
           API.get("/hr/jobs"),
-          API.get("/hr/stats"),
         ]);
-        setJobs(jobsRes.data);
-        setStats(statsRes.data);
+        setJobs(jobsRes.data|| []);
       } catch (err) {
         console.error(err);
       }
@@ -80,7 +77,17 @@ export default function JobManagement() {
         setJobs((prev) => [...prev, res.data]);
         alert("Job posted successfully!");
       }
-      setFormData({ title: "", description: "", location: "" });
+      setFormData({
+                title: "",
+                companyName: "",
+                companyLink: "",
+                description: "",
+                requiredSkills: "",
+                city: "",
+                state: "",
+                jobType: "",
+                salary: "",
+              });
       setEditingJob(null);
       setShowForm(false);
     } catch (err) {
@@ -118,16 +125,6 @@ export default function JobManagement() {
 
   return (
     <div className="p-6 pt-20">
-      {/* Stats Section */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
-        {Object.entries(stats).map(([key, value]) => (
-          <div key={key} className="bg-white shadow rounded-2xl p-4 text-center">
-            <h2 className="font-bold text-xl">{value}</h2>
-            <p className="text-gray-500 text-sm capitalize">{key}</p>
-          </div>
-        ))}
-      </div>
-
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Manage Jobs</h1>

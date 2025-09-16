@@ -16,6 +16,7 @@
   import Applications from "./pages/job-seeker/Applications";
   import JobManagement from "./pages/hr/JobManagement";
   import ApplicationManage from "./pages/hr/ApplicationManage";
+  import Notification from "./pages/job-seeker/Notifications";
 
   function App() {
     return (
@@ -35,6 +36,7 @@
             <Route path="/dashboard" element={ <ProtectedRoute> <Dashboard/> </ProtectedRoute> } />
             <Route path="/job-manage" element={ <ProtectedRoute> <JobManagement/> </ProtectedRoute> } />
             <Route path="/application-manage" element={ <ProtectedRoute> <ApplicationManage/> </ProtectedRoute> } />
+            <Route path="/notifications" element={<ProtectedRoute> <Notification/> </ProtectedRoute>} />
 
             {/* Role Protected */}
             <Route

@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Briefcase, MapPin, User, Building2, Link, DollarSign } from "lucide-react";
 import API from "../api";
 
-// --- Job Card ---
+
 function JobCard({ job, onApply }) {
   return (
     <motion.div
@@ -50,7 +50,7 @@ function JobCard({ job, onApply }) {
       </p>
 
       <p className="text-xs text-gray-400">
-        Posted on: {new Date(job.postDate).toLocaleDateString()}
+        Posted on: {job.createdAt ? new Date(job.createdAt).toLocaleDateString() : "N/A"}
       </p>
 
       {/* ✅ Apply Button inside job card */}
@@ -80,7 +80,7 @@ export default function JobPage() {
 
   useEffect(() => {
     API.get(`/jobs`)
-      .then((res) => setJobs(res.data))
+      .then((res) => setJobs(res.data.jobs || []))
       .catch((err) => console.error(err))
       .finally(() => setLoading(false));
   }, []);
