@@ -70,7 +70,7 @@ export default function ApplicationManage() {
   // ✅ Shortlist candidate
   const handleShortlist = async (appId) => {
     try {
-      await API.patch(`/hr/applications/${appId}`, { status: "shortlisted" });
+      await API.patch(`/hr/applications/${appId}/status`, { status: "shortlisted" });
       setApplicants((prev) =>
         prev.map((a) => (a._id === appId ? { ...a, status: "shortlisted" } : a))
       );

@@ -122,14 +122,17 @@ router.put("/jobs/:id/status", authMiddleware, checkRole("ROLE_HR"), async (req,
 
 // routes/hrRoute.js
 
-router.patch("/applications/:id", authMiddleware, checkRole("hr"), async (req, res) => {
+router.patch("/applications/:id", authMiddleware, checkRole("ROLE_HR"), async (req, res) => {
   try {
+    const {appId} = req.params;
     const { status } = req.body;
     const application = await Application.findByIdAndUpdate(
       req.params.id,
+      appId,
       { status },
       { new: true }
-    ).populate("applicantId");
+    ).populate("applicantId","name email")
+    .populate("jobId", "title companyName");
 
     // ✅ Create notification
     let message = "";
@@ -153,7 +156,7 @@ router.patch("/applications/:id", authMiddleware, checkRole("hr"), async (req, r
 
 
 // ✅ Update applicant status
-router.patch("/applications/:appId", async (req, res) => {
+router.patch("/applications/:appId/status", async (req, res) => {
   try {
     const { appId } = req.params;
     const { status } = req.body;

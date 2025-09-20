@@ -19,7 +19,6 @@ const handleSubmit = async (e) => {
   e.preventDefault();
   try {
     const res = await API.post("/users/login", form);
-    console.log("LOGIN RESPONSE:", res.data);
 
     if (res.data.success) {
       localStorage.setItem("token", res.data.token);

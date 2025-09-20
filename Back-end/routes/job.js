@@ -66,4 +66,17 @@ router.get("/applications", authMiddleware, checkRole("ROLE_JOBSEEKER"), async (
   }
 });
 
+// ✅ Delete application notification
+router.delete("/jobs/applications/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    await Application.findByIdAndDelete(id);
+    res.json({ success: true, message: "Notification deleted" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+});
+
+
 export default router;

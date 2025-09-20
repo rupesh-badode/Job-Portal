@@ -28,7 +28,7 @@ export default function JobManagement() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [jobsRes, statsRes] = await Promise.all([
+        const [jobsRes] = await Promise.all([
           API.get("/hr/jobs"),
         ]);
         setJobs(jobsRes.data|| []);
@@ -52,7 +52,7 @@ export default function JobManagement() {
   // ✅ Update applicant status
   const handleStatusChange = async (appId, status, jobId) => {
     try {
-      await API.patch(`/hr/applications/${appId}`, { status });
+      await API.patch(`/hr/applications/${appId}/status`, { status });
       fetchApplicants(jobId); // refresh list
     } catch (err) {
       console.error(err);
@@ -139,7 +139,7 @@ export default function JobManagement() {
       {/* Job List */}
       <AnimatePresence>
         {jobs.length > 0 ? (
-          <motion.ul layout className="space-y-4">
+          <motion.ul layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {jobs.map((job) => (
               <motion.li
                 key={job._id}

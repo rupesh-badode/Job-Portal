@@ -5,8 +5,8 @@
   import Landing from "./pages/Landing";
   import Login from "./pages/Login";
   import Register from "./pages/Register";
-  import JobPage from "./pages/JobPage";
-  import JobDetails from "./pages/JobDetails";
+  import JobPage from "./pages/job-seeker/JobPage";
+  import JobDetails from "./pages/job-seeker/JobDetails";
   import AdminDashboard from "./pages/dashboard/AdminDashboard";
   import HrDashboard from "./pages/dashboard/HrDashboard";
   import UserDashboard from "./pages/dashboard/UserDashboard";
@@ -16,7 +16,7 @@
   import Applications from "./pages/job-seeker/Applications";
   import JobManagement from "./pages/hr/JobManagement";
   import ApplicationManage from "./pages/hr/ApplicationManage";
-  import Notification from "./pages/job-seeker/Notifications";
+  import Notifications from "./pages/job-seeker/Notifications";
 
   function App() {
     return (
@@ -36,7 +36,7 @@
             <Route path="/dashboard" element={ <ProtectedRoute> <Dashboard/> </ProtectedRoute> } />
             <Route path="/job-manage" element={ <ProtectedRoute> <JobManagement/> </ProtectedRoute> } />
             <Route path="/application-manage" element={ <ProtectedRoute> <ApplicationManage/> </ProtectedRoute> } />
-            <Route path="/notifications" element={<ProtectedRoute> <Notification/> </ProtectedRoute>} />
+            <Route path="/notifications" element={<ProtectedRoute> <Notifications/> </ProtectedRoute>} />
 
             {/* Role Protected */}
             <Route

@@ -1,11 +1,34 @@
 import { useEffect, useState } from "react";
+import API from "../../api"; // ✅ make sure you already set up Axios instance
 
 export default function JobseekerDashboard() {
   const [stats, setStats] = useState({
-    totalApplied: 12,
-    shortlisted: 5,
-    rejected: 3,
+    totalApplied: 0,
+    shortlisted: 0,
+    rejected: 0,
   });
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const res = await API.get("/jobs/applications"); 
+        const applications = res.data;
+
+        const stats = {
+          totalApplied: applications.length,
+          shortlisted: applications.filter(app => app.status === "shortlisted").length,
+          rejected: applications.filter(app => app.status === "rejected").length,
+        };
+
+        setStats(stats);
+
+      } catch (err) {
+        console.error("Error fetching stats:", err);
+      }
+    };
+
+    fetchStats();
+  }, []);
 
   return (
     <div className="p-8">

@@ -1,9 +1,8 @@
 // JobPage.jsx
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Briefcase, MapPin, User, Building2, Link, DollarSign } from "lucide-react";
-import API from "../api";
-
+import { Briefcase, MapPin, User, Building2, DollarSign } from "lucide-react";
+import API from "../../api";
 
 function JobCard({ job, onApply }) {
   return (
